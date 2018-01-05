@@ -1,0 +1,35 @@
+version: '3.1'
+
+services:
+
+    db:
+#        image: firmendb-mysql
+        image: mysql
+#        build: Dockerfile-Mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: firmendb
+            MYSQL_USER: springuser
+            MYSQL_PASSWORD: ThePassword
+        ports:
+            - 3307:3306
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8093:8080
+
+    scrapy:
+#        image: stefanguelland/coffee:0.0.1-SNAPSHOT
+        build: .
+
+    splash:
+        image: scrapinghub/splash
+        # build: .
+        ports:
+            - 8082:8080
+            - 5023:5023
+            - 8050:8050
+            - 8051:8051
