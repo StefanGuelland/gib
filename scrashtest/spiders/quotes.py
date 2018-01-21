@@ -3,35 +3,74 @@ import scrapy
 from scrapy.linkextractors import LinkExtractor
 
 from scrapy_splash import SplashRequest
+from scrashtest.CompanyItem import CompanyItem
 
 
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
-    allowed_domains = ["toscrape.com"]
-    start_urls = ['http://quotes.toscrape.com/']
-    # allowed_domains = ["www.jobware.de"]
-    # start_urls = ['https://www.jobware.de/Jobs/IT']
+    careerfound = None;
+    company = None;
 
-
+    def __init__(self, url='', domain='', *args, **kwargs):
+        super(QuotesSpider, self).__init__(*args, **kwargs)
+        self.start_urls = [url];
+        self.allowed_domains = [domain];
+        self.company = CompanyItem();
+        self.company['start_url'] = url;
+        self.company['careerSites'] = [];
 
     # http_user = 'splash-user'
     # http_pass = 'splash-password'
 
     def parse(self, response):
         le = LinkExtractor()
-        for link in le.extract_links(response):
-            yield SplashRequest(
-                link.url,
-                self.parse_link,
-                endpoint='render.json',
-                args={
-                    'har': 1,
-                    'html': 1,
-                }
-            )
+        links = le.extract_links(response);
+        for link in links:
+            if self.prof_career(link.url, link.text):
+                self.company['careerSites'].append(link.url);
+                self.careerfound = True
+        if not self.careerfound:
+            for link in links:
+                if not self.prof_shop(link.url, link.text):
+                    yield SplashRequest(
+                        link.url,
+                        self.parse,
+                        endpoint='render.json',
+                        args={
+                            'har': 1,
+                            'html': 1,
+                        }
+                    )
+                if (self.careerfound):
+                    break
+        else:
+            yield self.company
 
-    def parse_link(self, response):
-        print("PARSED", response.real_url, response.url)
-        print(response.css("title").extract())
-        print(response.data["har"]["log"]["pages"])
-        print(response.headers.get('Content-Type'))
+    def prof_career(self, url, text):
+        buzzwords = ["karriere", "Karriere", "Jobs", "jobs", "career", "mitarbeiter", "Mitarbeiter"]
+        for word in buzzwords:
+            if not (url.find(word) == -1 and text.find(word) == -1):
+                return True
+        return None
+
+    def prof_shop(self, url, text):
+        buzzwords = ["shop", "Artikel", "category"]
+        for word in buzzwords:
+            if not (url.find(word) == -1 and text.find(word) == -1):
+                return True
+        return None
+
+    def print(self, response):
+        print(response);
+        info = "PARSED ";
+        if hasattr(response, 'real_url'):
+            info = info + "real_url: " + response.real_url;
+        if hasattr(response, 'url'):
+            info = info + "url: " + response.url;
+        print(info);
+        if hasattr(response, 'css'):
+            print(response.css("title").extract())
+        if hasattr(response, 'data'):
+            print(response.data["har"]["log"]["pages"])
+        if hasattr(response, 'headers'):
+            print(response.headers.get('Content-Type'))
