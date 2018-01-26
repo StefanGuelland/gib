@@ -1,6 +1,6 @@
+<?php Header("Content-Type: text/html; charset=iso-8859-1");?>
 <html>
  <head>
- <meta charset="Windows-1252">
   <title>PHP-Test</title>
  </head>
  <body>
