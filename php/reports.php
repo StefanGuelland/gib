@@ -80,39 +80,11 @@
               <a class="nav-link" href="#">Reports</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Analytics</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Export</a>
+              <a class="nav-link" href="#">Company DB Dump</a>
             </li>
           </ul>
 
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item again</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">One more nav</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Another nav item</a>
-            </li>
-          </ul>
 
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item again</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">One more nav</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Another nav item</a>
-            </li>
-          </ul>
         </nav>
 
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
@@ -130,6 +102,15 @@
               <span class="text-muted">Something else</span>
             </div>
           </section>
+                 <?php
+$pdo = new PDO('mysql:host=db;dbname=firmendb;charset=latin1', 'springuser', 'ThePassword');
+
+$stmt = $pdo->prepare("SELECT name, id, website, postal_code FROM company WHERE history_id = 1 LIMIT 50");
+$stmt->execute();
+
+$companyData = $stmt->fetchAll();
+ ?>
+
 
           <h2>Section title</h2>
           <div class="table-responsive">
@@ -139,33 +120,32 @@
                   <th>ID</th>
                   <th>Unternehmen</th>
                   <th>URL</th>
-                  <th>Karriereseite</th>
+                  <th>Postal Code</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
+       <?php
+       foreach($companyData as $companyRow){
+       ?>
+        <tr>
+                  <td><?php echo $companyRow['id'];  ?></td>
+                  <td><?php echo $companyRow['name'];  ?></td>
+                  <td><?php echo $companyRow['website'];  ?></td>
+                  <td><?php echo $companyRow['postal_code'];  ?></td>
                 </tr>
+       <?php
+
+       }
+
+
+       ?>
               </tbody>
             </table>
           </div>
         </main>
       </div>
     </div>
-     <?php
-$pdo = new PDO('mysql:host=db;dbname=firmendb;charset=latin1', 'springuser', 'ThePassword');
 
-$stmt = $pdo->prepare("SELECT name FROM company LIMIT 50");
-$stmt->execute();
-
-$test = $stmt->fetchAll();
-
-var_dump($test);
-
- echo '<p>Hallo Welt mit dbsdfsdf</p>'; ?>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
