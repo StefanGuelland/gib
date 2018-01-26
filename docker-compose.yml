@@ -35,3 +35,11 @@ services:
             - 5023:5023
             - 8050:8050
             - 8051:8051
+
+    php:
+#        image: stefanguelland/coffee:0.0.1-SNAPSHOT
+        build:
+            context: .
+            dockerfile: Dockerfile-php
+        ports:
+          - 8000:80
