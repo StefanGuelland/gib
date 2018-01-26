@@ -47,3 +47,7 @@ fabric.properties
 
 # Scrapy Stuff
 .scrapy/*
+
+#ignore venv and pyc
+*.pyc
+venv/
