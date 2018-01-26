@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import os
+import getpass
+
 BOT_NAME = 'Careercrawler'
 
 SPIDER_MODULES = ['scrashtest.spiders']
@@ -23,8 +26,17 @@ DOWNLOADER_MIDDLEWARES = {
 SPIDER_MIDDLEWARES = {
     'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
 }
-SPLASH_URL = 'http://192.168.99.100:8050/'
-# SPLASH_URL = 'http://192.168.59.103:8050/'
+
+print("Running inside Docker container!")
+if os.environ.get('APP_ENV') == 'docker':
+    SPLASH_URL = 'http://splash:8050/'
+else:
+    if getpass.getuser() == 'sguelland':
+        SPLASH_URL = 'http://localhost:8050/'
+    else:
+        SPLASH_URL = 'http://192.168.99.100:8050/'
+
+    # SPLASH_URL = 'http://192.168.59.103:8050/'
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 
