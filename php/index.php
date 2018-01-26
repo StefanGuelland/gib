@@ -17,19 +17,22 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+       <?php
+           $availabale = getDomainAvailableData();
+       ?>
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
 
         var data = google.visualization.arrayToDataTable([
-          ['Career', 'Number of Pages'],
-          ['Careerpage in Domain',     11],
-          ['No Careerpage in Domain',      2]
+          ['URL', 'Number of Pages'],
+          ['URL',     <?php echo $availabale['notNullDomains'] ?>],
+          ['No URL',      <?php echo $availabale['nullDomains'] ?>]
         ]);
 
         var options = {
-          title: 'Careerpages',
+          title: 'Company DB URL Available?',
           colors: ['#738fa0','#254356']
         };
 
@@ -58,15 +61,7 @@
 
   <body>
     <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-      <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
       <a class="navbar-brand" href="#">Dashboard</a>
-
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <form class="form-inline mt-2 mt-md-0">
-        </form>
-      </div>
     </nav>
 
     <div class="container-fluid">
@@ -77,95 +72,31 @@
               <a class="nav-link active" href="#">Overview <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Reports</a>
+              <a class="nav-link" href="reports.php">Reports</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Analytics</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Export</a>
+              <a class="nav-link" href="companydbdump.php">Company DB Dump</a>
             </li>
           </ul>
 
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item again</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">One more nav</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Another nav item</a>
-            </li>
-          </ul>
 
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Nav item again</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">One more nav</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Another nav item</a>
-            </li>
-          </ul>
         </nav>
 
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
-          <h1>Dashboard</h1>
-
+          <h1>Overview</h1>
+            <?php getDomainAvailableData() ?>
           <section class="row text-center placeholders">
             <div class="col-6 col-sm-6 placeholder">
               <div id="piechart" style="height:400px"></div>
-              <h4>Label</h4>
-              <div class="text-muted">Something else</div>
             </div>
             <div class="col-6 col-sm-6 placeholder">
               <div id="piechart2" style="height:400px"></div>
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
             </div>
           </section>
-
-          <h2>Section title</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Unternehmen</th>
-                  <th>URL</th>
-                  <th>Karriereseite</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </main>
       </div>
     </div>
-     <?php
-$pdo = new PDO('mysql:host=db;dbname=firmendb;charset=latin1', 'springuser', 'ThePassword');
 
-$stmt = $pdo->prepare("SELECT name FROM company LIMIT 50");
-$stmt->execute();
-
-$test = $stmt->fetchAll();
-
-var_dump($test);
-
- echo '<p>Hallo Welt mit dbsdfsdf</p>'; ?>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -177,3 +108,23 @@ var_dump($test);
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
+
+<?php
+ function getDomainAvailableData(){
+     $pdo = new PDO('mysql:host=db;dbname=firmendb;charset=latin1', 'springuser', 'ThePassword');
+
+     $stmt = $pdo->prepare("SELECT count(id) FROM `company` WHERE website is null");
+     $stmt->execute();
+     $nullDomains = $stmt->fetch();
+     $ret['nullDomains'] = $nullDomains[0];
+
+     $stmt = $pdo->prepare("SELECT count(id) FROM `company` WHERE website is not null");
+     $stmt->execute();
+     $notNullDomains = $stmt->fetch();
+     $ret['notNullDomains'] = $notNullDomains[0];
+
+     return $ret;
+ }
+
+
+?>
