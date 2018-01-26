@@ -1,5 +1,8 @@
 version: '3.1'
 
+volumes:
+    php:
+
 services:
 
     db:
@@ -43,3 +46,5 @@ services:
             dockerfile: Dockerfile-php
         ports:
           - 8000:80
+        volumes:
+          - /home/pia/PycharmProjects/gib/php:/var/www/html/
