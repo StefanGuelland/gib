@@ -16,13 +16,11 @@
 
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
-
-
   </head>
 
   <body>
     <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-      <a class="navbar-brand" href="#">Dashboard</a>
+      <a class="navbar-brand" href="#">Dashboard Crawler für Karriereseiten</a>
     </nav>
 
     <div class="container-fluid">
@@ -48,20 +46,20 @@
                  <?php
 $pdo = new PDO('mysql:host=db;dbname=firmendb;charset=latin1', 'springuser', 'ThePassword');
 
-$stmt = $pdo->prepare("SELECT name, id, website, postal_code FROM company WHERE history_id = 1 ORDER BY id LIMIT 50");
+$stmt = $pdo->prepare("SELECT name, id, website, postal_code FROM company WHERE history_id = 1 ORDER BY id");
 $stmt->execute();
 
 $companyData = $stmt->fetchAll();
  ?>
 
 
-          <h2>Section title</h2>
+          <h2>Companies</h2>
           <div class="table-responsive">
             <table id="companies" class="table table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Unternehmen</th>
+                  <th>Name</th>
                   <th>URL</th>
                   <th>Postal Code</th>
                 </tr>
@@ -97,13 +95,11 @@ $companyData = $stmt->fetchAll();
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js" ></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#companies').DataTable();
+            $('#companies').DataTable({
+                 "pageLength": 50
+            });
         } );
     </script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
   </body>
 </html>
