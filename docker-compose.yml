@@ -33,6 +33,7 @@ services:
     splash:
         image: scrapinghub/splash
         # build: .
+        restart: always
         ports:
             - 8082:8080
             - 5023:5023

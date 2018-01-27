@@ -27,8 +27,9 @@ SPIDER_MIDDLEWARES = {
     'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
 }
 
-print("Running inside Docker container!")
+
 if os.environ.get('APP_ENV') == 'docker':
+    print("Running inside Docker container!")
     SPLASH_URL = 'http://splash:8050/'
 else:
     if getpass.getuser() == 'sguelland':
@@ -46,3 +47,13 @@ ITEM_PIPELINES = {
 }
 DEPTH_LIMIT = 3
 DOWNLOAD_DELAY = 5.0
+
+if getpass.getuser() == 'sguelland':
+    DATABASE_IP = 'localhost:3307'
+else:
+    DATABASE_IP = 'db'
+DATABASE_USER = 'root'
+DATABASE_PASSWORD = 'root'
+DATABASE_NAME = 'firmendb'
+
+TELNETCONSOLE_ENABLED = False

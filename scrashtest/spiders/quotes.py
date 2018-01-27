@@ -11,12 +11,13 @@ class QuotesSpider(scrapy.Spider):
     careerfound = None;
     company = None;
 
-    def __init__(self, url='', domain='', *args, **kwargs):
+    def __init__(self, id='', url='', domain='', *args, **kwargs):
         super(QuotesSpider, self).__init__(*args, **kwargs)
         self.start_urls = [url];
         self.allowed_domains = [domain];
         self.company = CompanyItem();
         self.company['start_url'] = url;
+        self.company['id'] = id;
         self.company['careerSites'] = [];
 
     # http_user = 'splash-user'
@@ -47,14 +48,14 @@ class QuotesSpider(scrapy.Spider):
             yield self.company
 
     def prof_career(self, url, text):
-        buzzwords = ["karriere", "Karriere", "Jobs", "jobs", "career", "mitarbeiter", "Mitarbeiter"]
+        buzzwords = ["karriere", "Karriere", "Jobs", "jobs", "career", "mitarbeiter", "Mitarbeiter", "stellenmarkt"]
         for word in buzzwords:
             if not (url.find(word) == -1 and text.find(word) == -1):
                 return True
         return None
 
     def prof_shop(self, url, text):
-        buzzwords = ["shop", "Artikel", "category"]
+        buzzwords = ["shop", "Artikel", "category", "Produkte"]
         for word in buzzwords:
             if not (url.find(word) == -1 and text.find(word) == -1):
                 return True
