@@ -20,7 +20,7 @@
 
   <body>
     <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-      <a class="navbar-brand" href="#">Dashboard Crawler für Karriereseiten</a>
+      <a class="navbar-brand" href="#">Dashboard Crawler Karriereseiten</a>
     </nav>
 
     <div class="container-fluid">
@@ -98,6 +98,7 @@ $companyData = $stmt->fetchAll();
             $('#companies').DataTable({
                  "pageLength": 50
             });
+            $('#companies').show();
         } );
     </script>
 
