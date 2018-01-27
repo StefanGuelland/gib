@@ -1,4 +1,6 @@
 scrapy
+sqlalchemy
+pymysql
 scrapy-splash
 service_identity
 six
