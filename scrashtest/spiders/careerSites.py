@@ -6,13 +6,13 @@ from scrapy_splash import SplashRequest
 from scrashtest.CompanyItem import CompanyItem
 
 
-class QuotesSpider(scrapy.Spider):
-    name = "quotes"
+class CareerSpider(scrapy.Spider):
+    name = "careerSites"
     careerfound = None;
     company = None;
 
     def __init__(self, id='', url='', domain='', *args, **kwargs):
-        super(QuotesSpider, self).__init__(*args, **kwargs)
+        super(CareerSpider, self).__init__(*args, **kwargs)
         self.start_urls = [url];
         self.allowed_domains = [domain];
         self.company = CompanyItem();
@@ -55,7 +55,7 @@ class QuotesSpider(scrapy.Spider):
         return None
 
     def prof_shop(self, url, text):
-        buzzwords = ["shop", "Artikel", "category", "Produkte"]
+        buzzwords = ["shop", "Artikel", "category", "Produkte", "la-cantina"]
         for word in buzzwords:
             if not (url.find(word) == -1 and text.find(word) == -1):
                 return True

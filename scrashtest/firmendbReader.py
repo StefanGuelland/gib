@@ -35,11 +35,8 @@ class FirmendbReader(object):
         query = self.session.query(CompanyEntity)\
             .order_by(CompanyEntity.id)\
             .filter(CompanyEntity.history_id == 1)\
-            .filter(CompanyEntity.website != "")\
-            [1:50]
-
-        self.createExampleCompanies();
-
+            .filter(CompanyEntity.website != "") \
+            [1:100]
         for company in query:
             print(company.name, company.website)
             self.companies.append(Company(company.id, company.name.decode("utf-8") , company.website.decode("utf-8") ));

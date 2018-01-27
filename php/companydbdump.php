@@ -37,8 +37,6 @@
               <a class="nav-link active" href="#">Company DB Dump</a>
             </li>
           </ul>
-
-
         </nav>
 
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
@@ -51,8 +49,6 @@ $stmt->execute();
 
 $companyData = $stmt->fetchAll();
  ?>
-
-
           <h2>Companies</h2>
           <div class="table-responsive">
             <table id="companies" class="table table-striped">
@@ -77,8 +73,6 @@ $companyData = $stmt->fetchAll();
        <?php
 
        }
-
-
        ?>
               </tbody>
             </table>

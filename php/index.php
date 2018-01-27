@@ -19,42 +19,43 @@
     <script type="text/javascript">
        <?php
            $availabale = getDomainAvailableData();
+           $careersites = getCareerSiteFound();
        ?>
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
 
-        var data = google.visualization.arrayToDataTable([
+        var dataUrl = google.visualization.arrayToDataTable([
           ['URL', 'Number of Pages'],
           ['URL',     <?php echo $availabale['notNullDomains'] ?>],
           ['No URL',      <?php echo $availabale['nullDomains'] ?>]
         ]);
 
-        var options = {
+        var optionsUrl = {
           title: 'Company DB URL Available?',
           colors: ['#738fa0','#254356']
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        chart.draw(data, options);
+        var chartUrl = new google.visualization.PieChart(document.getElementById('piechart'));
+        chartUrl.draw(dataUrl, optionsUrl);
 
 
-        var data2 = google.visualization.arrayToDataTable([
-          ['Pages', 'Number of Domains'],
-          ['Analyzed', 42],
-          ['Not Analyzed', 2002]
+        var dataCareer = google.visualization.arrayToDataTable([
+          ['Careersites', 'Number of Pages'],
+          ['Careersites found', <?php echo $careersites['hasCareer'] ?>],
+          ['No careersites', <?php echo $careersites['noCareer'] ?>]
         ]);
 
-        var options2 = {
+        var optionsCareer = {
           title: 'Analyzed Data',
           colors: ['#738fa0','#254356']
         };
 
-        var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
+        var chartCareer = new google.visualization.PieChart(document.getElementById('piechart2'));
 
 
-        chart2.draw(data2, options2);
+        chartCareer.draw(dataCareer, optionsCareer);
       }
     </script>
   </head>
@@ -109,9 +110,10 @@
 </html>
 
 <?php
- function getDomainAvailableData(){
-     $pdo = new PDO('mysql:host=db;dbname=firmendb;charset=latin1', 'springuser', 'ThePassword');
 
+ function getDomainAvailableData(){
+
+    $pdo = new PDO('mysql:host=db;dbname=firmendb;charset=latin1', 'springuser', 'ThePassword');
      $stmt = $pdo->prepare("SELECT count(id) FROM `company` WHERE website is null");
      $stmt->execute();
      $nullDomains = $stmt->fetch();
@@ -121,6 +123,24 @@
      $stmt->execute();
      $notNullDomains = $stmt->fetch();
      $ret['notNullDomains'] = $notNullDomains[0];
+
+     return $ret;
+ }
+
+  function getCareerSiteFound(){
+  $pdo = new PDO('mysql:host=db;dbname=firmendb;charset=latin1', 'springuser', 'ThePassword');
+     $stmt = $pdo->prepare("SELECT COUNT( DISTINCT company_id) FROM career_site");
+     $stmt->execute();
+     $hasCareer = $stmt->fetch();
+     $ret['hasCareer'] = $hasCareer[0];
+
+     $stmt = $pdo->prepare("SELECT COUNT( DISTINCT company.id)
+                            FROM company
+                            where company.id not in ( Select company_id from career_site)
+                            AND company.website is not null");
+     $stmt->execute();
+     $noCareer = $stmt->fetch();
+     $ret['noCareer'] = $noCareer[0];
 
      return $ret;
  }
