@@ -58,15 +58,7 @@
 
   <body>
     <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-      <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
       <a class="navbar-brand" href="#">Dashboard</a>
-
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <form class="form-inline mt-2 mt-md-0">
-        </form>
-      </div>
     </nav>
 
     <div class="container-fluid">
@@ -74,13 +66,13 @@
         <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
           <ul class="nav nav-pills flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="#">Overview <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="index.php">Overview <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Reports</a>
+              <a class="nav-link active" href="#">Reports</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Company DB Dump</a>
+              <a class="nav-link" href="companydbdump.php">Company DB Dump</a>
             </li>
           </ul>
 
@@ -88,20 +80,7 @@
         </nav>
 
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
-          <h1>Dashboard</h1>
-
-          <section class="row text-center placeholders">
-            <div class="col-6 col-sm-6 placeholder">
-              <div id="piechart" style="height:400px"></div>
-              <h4>Label</h4>
-              <div class="text-muted">Something else</div>
-            </div>
-            <div class="col-6 col-sm-6 placeholder">
-              <div id="piechart2" style="height:400px"></div>
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-          </section>
+          <h1>Reports</h1>
                  <?php
 $pdo = new PDO('mysql:host=db;dbname=firmendb;charset=latin1', 'springuser', 'ThePassword');
 
