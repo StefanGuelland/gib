@@ -25,14 +25,17 @@ services:
         restart: always
         ports:
             - 8093:8080
+        depends_on:
+          - db
 
     scrapy:
-#        image: stefanguelland/coffee:0.0.1-SNAPSHOT
         build: .
+        depends_on:
+          - db
+          - splash
 
     splash:
         image: scrapinghub/splash
-        # build: .
         restart: always
         ports:
             - 8082:8080
@@ -41,9 +44,10 @@ services:
             - 8051:8051
 
     php:
-#        image: stefanguelland/coffee:0.0.1-SNAPSHOT
         build:
             context: .
             dockerfile: Dockerfile-php
         ports:
           - 8000:80
+        depends_on:
+          - db
