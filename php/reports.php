@@ -73,16 +73,21 @@
               </thead>
               <tbody>
        <?php
+       $oldCareerUrl = '';
        foreach($careerData as $careerRow){
+        if(!(strcasecmp($oldCareerUrl, $careerRow['career']) == 0)){
        ?>
         <tr>
-                    <td><?php echo $careerRow['cid'];  ?></td>
-                  <td><?php echo $careerRow['name'];  ?></td>
+
+                   <td ><?php echo $careerRow['cid'];  ?></td>
+                  <td ><?php echo $careerRow['name'];  ?></td>
                   <td><?php echo $careerRow['website'];  ?></td>
                   <td><?php echo $careerRow['career'];  ?></td>
                   <td><?php echo $careerRow['timestamp'];  ?></td>
-                </tr>
+        </tr>
        <?php
+       }
+       $oldCareerUrl = $careerRow['career'];
        }
        ?>
               </tbody>

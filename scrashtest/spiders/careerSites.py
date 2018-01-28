@@ -51,7 +51,8 @@ class CareerSpider(scrapy.Spider):
         buzzwords = ["karriere", "Karriere", "Jobs", "jobs", "career", "mitarbeiter", "Mitarbeiter", "stellenmarkt"]
         for word in buzzwords:
             if not (url.find(word) == -1 and text.find(word) == -1):
-                return True
+                if not url in self.company['careerSites']:
+                    return True
         return None
 
     def prof_shop(self, url, text):

@@ -20,6 +20,8 @@
        <?php
            $availabale = getDomainAvailableData();
            $careersites = getCareerSiteFound();
+           $countedCareer = getCareerSitesPerCompany();
+
        ?>
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
@@ -31,12 +33,10 @@
           ['URL',     <?php echo $availabale['notNullDomains'] ?>],
           ['No URL',      <?php echo $availabale['nullDomains'] ?>]
         ]);
-
         var optionsUrl = {
           title: 'Company DB URL Available?',
           colors: ['#738fa0','#254356']
         };
-
         var chartUrl = new google.visualization.PieChart(document.getElementById('piechart'));
         chartUrl.draw(dataUrl, optionsUrl);
 
@@ -46,17 +46,29 @@
           ['Careersites found', <?php echo $careersites['hasCareer'] ?>],
           ['No careersites', <?php echo $careersites['noCareer'] ?>]
         ]);
-
         var optionsCareer = {
-          title: 'Analyzed Data',
+          title: 'Founded Career Sites',
           colors: ['#738fa0','#254356']
         };
-
         var chartCareer = new google.visualization.PieChart(document.getElementById('piechart2'));
-
-
         chartCareer.draw(dataCareer, optionsCareer);
-      }
+
+        var dataCountCareer = google.visualization.arrayToDataTable([
+          ['Careersites per Company', 'Number of Companies'],
+          <?php  foreach($countedCareer as $row){
+          ?>
+          ['<?php  echo $row['counted']; ?>', <?php  echo $row['anz'] ?>],
+          <?php
+          }
+          ?>
+        ]);
+        var optionsCountCareer= {
+        title: 'Careersites per Companie',
+        colors: ['#738fa0','#254356']
+      };
+        var chartCareer = new google.visualization.ColumnChart(document.getElementById('piechart3'));
+        chartCareer.draw(dataCountCareer, optionsCountCareer);
+        }
     </script>
   </head>
 
@@ -85,13 +97,18 @@
 
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
           <h1>Overview</h1>
-            <?php getDomainAvailableData() ?>
+
           <section class="row text-center placeholders">
             <div class="col-6 col-sm-6 placeholder">
-              <div id="piechart" style="height:400px"></div>
+              <div id="piechart" style="height: 375px"></div>
             </div>
             <div class="col-6 col-sm-6 placeholder">
-              <div id="piechart2" style="height:400px"></div>
+              <div id="piechart2" style="height:375px"></div>
+            </div>
+          </section>
+          <section class="row text-center placeholders">
+            <div class="col-6 col-sm-6 placeholder">
+              <div id="piechart3" style="height:350px"></div>
             </div>
           </section>
         </main>
@@ -143,6 +160,15 @@
      $ret['noCareer'] = $noCareer[0];
 
      return $ret;
+ }
+
+   function getCareerSitesPerCompany(){
+     $pdo = new PDO('mysql:host=db;dbname=firmendb;charset=latin1', 'springuser', 'ThePassword');
+     $stmt = $pdo->prepare("SELECT COUNT(counted) as anz, counted FROM( SELECT COUNT(`website`) as counted FROM `career_site` GROUP BY company_id) AS CT GROUP BY counted");
+     $stmt->execute();
+     $counted = $stmt->fetchAll();
+
+     return $counted;
  }
 
 
