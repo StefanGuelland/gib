@@ -47,14 +47,14 @@
           ['No careersites', <?php echo $careersites['noCareer'] ?>]
         ]);
         var optionsCareer = {
-          title: 'Founded Career Sites',
+          title: 'Career Sites found',
           colors: ['#738fa0','#254356']
         };
         var chartCareer = new google.visualization.PieChart(document.getElementById('piechart2'));
         chartCareer.draw(dataCareer, optionsCareer);
 
         var dataCountCareer = google.visualization.arrayToDataTable([
-          ['Careersites per Company', 'Number of Companies'],
+          ['Career-Sites per Company', 'Companies'],
           <?php  foreach($countedCareer as $row){
           ?>
           ['<?php  echo $row['counted']; ?>', <?php  echo $row['anz'] ?>],
@@ -63,7 +63,7 @@
           ?>
         ]);
         var optionsCountCareer= {
-        title: 'Careersites per Companie',
+        title: 'Career-Sites per Company',
         colors: ['#738fa0','#254356']
       };
         var chartCareer = new google.visualization.ColumnChart(document.getElementById('piechart3'));
@@ -99,15 +99,15 @@
           <h1>Overview</h1>
 
           <section class="row text-center placeholders">
-            <div class="col-6 col-sm-6 placeholder">
+            <div class="col-12 col-md-6 col-sm placeholder">
               <div id="piechart" style="height: 375px"></div>
             </div>
-            <div class="col-6 col-sm-6 placeholder">
+            <div class="col-12 col-md-6 col-sm placeholder">
               <div id="piechart2" style="height:375px"></div>
             </div>
           </section>
           <section class="row text-center placeholders">
-            <div class="col-6 col-sm-6 placeholder">
+            <div class="col-12 col-md-12 placeholder">
               <div id="piechart3" style="height:350px"></div>
             </div>
           </section>
