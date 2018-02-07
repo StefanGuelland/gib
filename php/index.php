@@ -42,12 +42,12 @@
 
 
         var dataCareer = google.visualization.arrayToDataTable([
-          ['Careersites', 'Number of Pages'],
-          ['Careersites found', <?php echo $careersites['hasCareer'] ?>],
-          ['No careersites', <?php echo $careersites['noCareer'] ?>]
+          ['Career-Sites', 'Number of Pages'],
+          ['Career-Sites found', <?php echo $careersites['hasCareer'] ?>],
+          ['No Career-Sites', <?php echo $careersites['noCareer'] ?>]
         ]);
         var optionsCareer = {
-          title: 'Career Sites found',
+          title: 'Career-Sites found',
           colors: ['#738fa0','#254356']
         };
         var chartCareer = new google.visualization.PieChart(document.getElementById('piechart2'));
