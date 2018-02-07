@@ -1,4 +1,4 @@
-version: '3.1'
+version: '2.3'
 
 volumes:
     php:
@@ -19,6 +19,8 @@ services:
             MYSQL_PASSWORD: ThePassword
         ports:
             - 3307:3306
+        mem_limit: 500M
+        memswap_limit: 600M
 
     adminer:
         image: adminer
@@ -27,27 +29,36 @@ services:
             - 8093:8080
         depends_on:
           - db
+        mem_limit: 500M
+        memswap_limit: 600M
 
     scrapy:
         build: .
         depends_on:
           - db
           - splash
+        mem_limit: 500M
+        memswap_limit: 600M
 
     splash:
         image: scrapinghub/splash
         restart: always
         ports:
-            - 8082:8080
+#            - 8082:8080
             - 5023:5023
             - 8050:8050
             - 8051:8051
+        mem_limit: 4G
+        memswap_limit: 4250M
 
     php:
         build:
             context: .
             dockerfile: Dockerfile-php
+        restart: always
         ports:
           - 8000:80
         depends_on:
           - db
+        mem_limit: 500M
+        memswap_limit: 600M
